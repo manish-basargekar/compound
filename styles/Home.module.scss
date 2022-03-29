@@ -1,0 +1,30 @@
+.container{
+  font-size: 2rem;
+  max-width: 600px;
+  margin: auto;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  // align-items: center;
+  // background-color: aqua;
+
+
+  .day{
+    text-transform: uppercase;
+    color: rgb(150, 146, 146);
+    font-weight: 300;
+  }
+}
+
+.task{
+  transition: text-decoration 300ms ease;
+  &:hover{
+
+
+    cursor: pointer;
+    font-style: italic;
+    text-decoration: line-through;
+    color: rgb(150, 146, 146);
+  }
+}
