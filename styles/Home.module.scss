@@ -76,8 +76,47 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 1rem;
-    h3 {
+    // background-color: blue;
+    // margin-bottom: 1rem;
+  }
+
+  .outof {
+    color: rgb(89, 114, 163);
+    display: flex;
+    -moz-box-align: center;
+    align-items: center;
+    font-size: 14px;
+    padding-left: 10px;
+    // margin-bottom: 15px;
+    min-width: 120px;
+
+    .status {
+      text-decoration: underline;
+      // cursor: pointer;
+      font-size: 12px;
+      min-width: 16px;
+      text-align: center;
+    }
+
+    .progressWrapper {
+      border-radius: 2px;
+      height: 8px;
+      flex: 1 1 0%;
+      margin-left: 10px;
+      background-color: rgba(220, 228, 243, 0.6);
+      position: relative;
+      overflow: hidden;
+
+      .bar {
+        position: absolute;
+        left: 0px;
+        top: 0px;
+        height: 100%;
+        border-radius: 2px;
+        width: 35%;
+        background-color: rgb(57, 183, 255);
+        transition: width 200ms ease 0s;
+      }
     }
   }
 
@@ -120,22 +159,60 @@
   display: flex;
   margin: auto;
   margin-bottom: 10px;
+  position: relative;
 
   &:hover {
     cursor: pointer;
-    font-style: italic;
-    text-decoration: line-through;
+    // font-style: italic;
+    // text-decoration: line-through;
     color: rgb(150, 146, 146);
+  }
+
+  .taskContent {
+    display: flex;
+
+    .taskOption {
+      height: fit-content;
+      position: absolute;
+      top: 13px;
+      right: 10px;
+      bottom: 0px;
+      display: flex;
+      background: rgb(255, 255, 255) none repeat scroll 0% 0%;
+    }
+  }
+  .taskWrapper {
+    text-decoration: none;
+
+    .tags {
+      // background-color: blueviolet;
+      margin-left: 30px;
+      margin-top: 0.6rem;
+      display: flex;
+      font-size: 0.8rem;
+      display: none;
+      .tag {
+        margin-right: 0.4rem;
+        padding: 0.3rem 0.5rem;
+        border-radius: 100px;
+        color: gray;
+        background-color: #eee;
+        width: max-content;
+        display: flex;
+
+        justify-content: center;
+        align-items: center;
+
+        .tagType{
+          margin-left: .2rem;
+        }
+      }
+    }
   }
 }
 
-.taskCompleted {
-  font-style: italic;
-  text-decoration: line-through;
-  color: rgb(150, 146, 146);
-}
-
-.taskTitle {
+.taskTitle,
+.taskTitleChecked {
   line-height: 1.5;
   flex-wrap: wrap;
   word-break: break-word;
@@ -151,4 +228,11 @@
   cursor: pointer;
   flex-wrap: wrap;
   word-break: break-word;
+}
+
+.taskTitleChecked {
+  text-decoration: line-through;
+  font-style: italic;
+
+  color: rgb(150, 146, 146);
 }
