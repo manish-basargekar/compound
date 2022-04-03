@@ -50,6 +50,9 @@ export default function Home() {
 		setNewHabit("");
 	};
 
+	const percent =
+		(habitList.filter((f) => f.done === true).length / habitList.length) * 100;
+
 	return (
 		<>
 			<div className={Style.container}>
@@ -57,9 +60,15 @@ export default function Home() {
 					<div className={Style.head}>
 						<h3>Tasks remaining today</h3>
 						<div className={Style.outof}>
-							<span className={Style.status}>2/5</span>
+							<span className={Style.status}>
+								{habitList.filter((f) => f.done === true).length}/
+								{habitList.length}
+							</span>
 							<div className={Style.progressWrapper}>
-								<div className={Style.bar} style={{ width: "35%" }}></div>
+								<div
+									className={Style.bar}
+									style={{ width: `${percent}%` }}
+								></div>
 							</div>
 						</div>
 					</div>
@@ -89,7 +98,6 @@ export default function Home() {
 								value={newHabit}
 								onChange={(e) => setNewHabit(e.target.value)}
 							/>
-							
 						</div>
 					</form>
 					<HabitCard habitList={habitList} setHabitList={setHabitList} />
