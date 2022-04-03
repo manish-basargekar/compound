@@ -1,0 +1,137 @@
+.task,
+.taskCompleted {
+    display: flex;
+    // align-items: flex-start;
+    transition: text-decoration 300ms ease;
+    padding: 1rem;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: rgba(0, 0, 0, 0.08) 0px 1px 3px 0px;
+    width: 500px;
+    font-size: 1rem;
+    display: flex;
+    margin: auto;
+    margin-bottom: 10px;
+    position: relative;
+
+    &:hover {
+        cursor: pointer;
+        // font-style: italic;
+        // text-decoration: line-through;
+        color: rgb(150, 146, 146);
+    }
+
+    .taskContent {
+        display: flex;
+
+        .taskOption {
+            height: fit-content;
+            position: absolute;
+            top: 13px;
+            right: 10px;
+            bottom: 0px;
+            display: flex;
+            background: rgb(255, 255, 255) none repeat scroll 0% 0%;
+        }
+
+        .checkbox,
+        .checkboxDone {
+            position: relative;
+            height: 18px;
+            width: 18px;
+            border-radius: 50%;
+            background-color: rgb(255, 255, 255);
+            margin-right: 10px;
+            align-self: baseline;
+            border: 1px solid rgb(179, 194, 223);
+            position: relative;
+            cursor: pointer;
+            &::after {
+                position: absolute;
+                width: 8px;
+                height: 5px;
+                border-color: currentcolor currentcolor rgb(255, 255, 255) rgb(255, 255, 255);
+                border-style: none none solid solid;
+                border-width: medium medium 2px 2px;
+                border-image: none 100% / 1 / 0 stretch;
+                background: transparent none repeat scroll 0% 0%;
+                content: "";
+                opacity: 0;
+                transform: rotate(-45deg);
+                top: 30%;
+                left: 25%;
+                // background-color: blue;
+            }
+        }
+
+        .checkboxDone {
+            height: 18px;
+            width: 18px;
+            border-radius: 50%;
+            margin-right: 10px;
+            align-self: baseline;
+            border: 1px solid rgb(95, 183, 255);
+            position: relative;
+            cursor: pointer;
+            background-color: rgb(95, 183, 255);
+
+            &::after {
+                opacity: 1;
+            }
+        }
+    }
+    .taskWrapper {
+        text-decoration: none;
+
+        .tags {
+            // background-color: blueviolet;
+            margin-left: 30px;
+            margin-top: 0.6rem;
+            display: flex;
+            font-size: 0.8rem;
+            // display: none;
+            .tag {
+                margin-right: 0.4rem;
+                padding: 0.3rem 0.5rem;
+                border-radius: 100px;
+                color: gray;
+                background-color: #eee;
+                width: max-content;
+                display: flex;
+
+                justify-content: center;
+                align-items: center;
+
+                .tagType {
+                    margin-left: 0.2rem;
+                }
+            }
+        }
+    }
+}
+
+.taskTitle,
+.taskTitleChecked {
+    line-height: 1.5;
+    flex-wrap: wrap;
+    word-break: break-word;
+
+    margin: -2px 0px 0px;
+    border: medium none;
+    box-shadow: none;
+    padding: 0px;
+    flex: 1 1 0%;
+    background: transparent none repeat scroll 0% 0%;
+    resize: none;
+    // line-height: 20px;
+    cursor: pointer;
+    flex-wrap: wrap;
+    word-break: break-word;
+}
+
+.taskTitleChecked {
+    text-decoration: line-through;
+    font-style: italic;
+
+    color: rgb(150, 146, 146);
+}

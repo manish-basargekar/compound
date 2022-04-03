@@ -1,5 +1,8 @@
 import Style from "../styles/Home.module.scss";
 import { useState } from "react";
+import HabitCard from "../components/habitCard/HabitCard";
+
+import { nanoid } from "nanoid";
 
 export default function Home() {
 	const tasks = [
@@ -26,28 +29,30 @@ export default function Home() {
 			id: 4,
 			title:
 				"Lorem ipsum dolor sit amet consectetur adipisicing elit. Laborum sint, deserunt sunt",
-			done: true,
+			done: false,
 		},
 		{
 			id: 5,
 			title:
 				"Lorem ipsum dolor sit amet consectetur adipisicing elit. Laborum sint, deserunt sunt quidem quibusdam dolore sequi consequuntur dicta repudiandae dolor tenetur culpa omnis molestiae corrupti molestias nesciunt, velit ducimus nulla?",
-			done: true,
+			done: false,
 		},
 	];
+
+	const [newHabit, setNewHabit] = useState("");
+
+	const [habitList, setHabitList] = useState(tasks);
+
+	const addHabit = (e) => {
+		e.preventDefault();
+		const addNewHabit = { id: nanoid(), title: newHabit, done: false };
+		setHabitList([...habitList, addNewHabit]);
+		setNewHabit("");
+	};
 
 	return (
 		<>
 			<div className={Style.container}>
-				{/* <div className={Style.time}>
-					<h3>
-						{new Date().toLocaleDateString()}{" "}
-						<span className={Style.day}>
-							{new Date().toLocaleString("en-us", { weekday: "long" })}{" "}
-						</span>
-					</h3>
-				</div> */}
-
 				<div className={Style.tasklist}>
 					<div className={Style.head}>
 						<h3>Tasks remaining today</h3>
@@ -58,104 +63,36 @@ export default function Home() {
 							</div>
 						</div>
 					</div>
-					<div className={Style.addTask}>
-						<svg
-							stroke="currentColor"
-							fill="none"
-							strokeWidth="2"
-							viewBox="0 0 24 24"
-							strokeLinecap="round"
-							strokeLinejoin="round"
-							// class="AddTask__AddIcon-h0zgp9-0 fwbGyI"
-							height="1em"
-							width="1em"
-							xmlns="http://www.w3.org/2000/svg"
-						>
-							<line x1="12" y1="5" x2="12" y2="19"></line>
-							<line x1="5" y1="12" x2="19" y2="12"></line>
-						</svg>
-						<input placeholder="Add task" className="" value="" />
-					</div>
-					{tasks.map((t) => (
-						<div key={t.id} className={`${Style.task}`}>
-							<div className={Style.taskWrapper}>
-								<div className={Style.taskContent}>
-									<div
-										className={
-											t.done ? `${Style.checkboxDone}` : `${Style.checkbox}`
-										}
-										// onClick={toggleClass}
-									></div>
-									<div
-										className={
-											t.done
-												? `${Style.taskTitleChecked}`
-												: `${Style.taskTitle}`
-										}
-									>
-										{t.title}
-									</div>
-									<div className={Style.taskOption}>
-										<svg
-											stroke="currentColor"
-											fill="none"
-											strokeWidth="2"
-											viewBox="0 0 24 24"
-											strokeLinecap="round"
-											strokeLinejoin="round"
-											// class="Task__ActionIcon-wbyoqt-8 fGldON"
-											height="1em"
-											width="1em"
-											xmlns="http://www.w3.org/2000/svg"
-										>
-											<circle cx="12" cy="12" r="1"></circle>
-											<circle cx="12" cy="5" r="1"></circle>
-											<circle cx="12" cy="19" r="1"></circle>
-										</svg>
-									</div>
-								</div>
-								<div className={Style.tags}>
-									<div className={Style.tag}>🔥 {Math.floor(Math.random() * 100)}</div>
-									{/* <div className={Style.tag}>
-										<svg
-											xmlns="http://www.w3.org/2000/svg"
-											width="16"
-											height="16"
-											viewBox="0 0 24 24"
-											fill="none"
-											stroke="currentColor"
-											strokeWidth="2"
-											strokeLinecap="round"
-											strokeLinejoin="round"
-											// class="ai ai-Fire"
-										>
-											<path d="M12 22c-4.97 0-9-2.582-9-7v-.088C3 12.794 4.338 11.1 6.375 10c1.949-1.052 3.101-2.99 2.813-5l-.563-3 2.086.795c3.757 1.43 6.886 3.912 8.914 7.066A8.495 8.495 0 0 1 21 14.464V15c0 1.562-.504 2.895-1.375 3.965" />
-											<path d="M12 22c-1.657 0-3-1.433-3-3.2 0-1.4 1.016-2.521 1.91-3.548L12 14l1.09 1.252C13.984 16.28 15 17.4 15 18.8c0 1.767-1.343 3.2-3 3.2z" />
-										</svg>
-										<span className={Style.tagType}>14</span>
-									</div> */}
-									<div className={Style.tag}>
-										<svg
-											xmlns="http://www.w3.org/2000/svg"
-											width="16"
-											height="16"
-											viewBox="0 0 24 24"
-											fill="none"
-											stroke="currentColor"
-											strokeWidth="2"
-											strokeLinecap="round"
-											strokeLinejoin="round"
-											// class="ai ai-Clock"
-										>
-											<circle cx="12" cy="12" r="10" />
-											<path d="M15 16l-2.414-2.414A2 2 0 0 1 12 12.172V6" />
-										</svg>
-										<span className={Style.tagType}>Daily</span>
-									</div>
-								</div>
-							</div>
+					<form onSubmit={addHabit}>
+						<div className={Style.addTask}>
+							<button type="submit" className={Style.addHabitBtn}>
+								<svg
+									stroke="currentColor"
+									fill="none"
+									strokeWidth="2"
+									viewBox="0 0 24 24"
+									strokeLinecap="round"
+									strokeLinejoin="round"
+									// class="AddTask__AddIcon-h0zgp9-0 fwbGyI"
+									height="1em"
+									width="1em"
+									xmlns="http://www.w3.org/2000/svg"
+								>
+									<line x1="12" y1="5" x2="12" y2="19"></line>
+									<line x1="5" y1="12" x2="19" y2="12"></line>
+								</svg>
+							</button>
+							<input
+								required
+								placeholder="Add task"
+								className={Style.addHabitInput}
+								value={newHabit}
+								onChange={(e) => setNewHabit(e.target.value)}
+							/>
+							
 						</div>
-					))}
+					</form>
+					<HabitCard habitList={habitList} setHabitList={setHabitList} />
 				</div>
 			</div>
 		</>
