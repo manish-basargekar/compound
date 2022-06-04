@@ -1,24 +1,31 @@
 .task,
 .taskCompleted {
     display: flex;
-    // align-items: flex-start;
     transition: text-decoration 300ms ease;
-    padding: 1rem;
-    background-color: #fff;
+    padding:0;
+  
+    // background-color: #fff;
     border-radius: 10px;
-    box-shadow: rgba(0, 0, 0, 0.08) 0px 1px 3px 0px;
+    // box-shadow: rgba(0, 0, 0, 0.08) 0px 1px 3px 0px;
     width: 600px;
     font-size: 1rem;
     display: flex;
     margin: auto;
-    margin-bottom: 10px;
+    margin-bottom: 1.5rem;
     position: relative;
+    // color: #4B5563;
 
     &:hover {
         // cursor: pointer;
         // font-style: italic;
         // text-decoration: line-through;
         // color: rgb(150, 146, 146);
+        // .taskContent{
+
+        //     .taskOption{
+        //         display: block;
+        //     }
+        // }
     }
 
     .taskContent {
@@ -27,13 +34,14 @@
         .taskOption {
             height: fit-content;
             position: absolute;
-            top: 13px;
-            right: 10px;
+            top: 1px;
+            left: -20px;
             bottom: 0px;
             display: flex;
             cursor: pointer;
             background: rgb(255, 255, 255) none repeat scroll 0% 0%;
-            
+            cursor: grab;
+            // display: none;
             &:hover{
                 svg{
 
@@ -85,7 +93,7 @@
             border: 1px solid rgb(95, 183, 255);
             position: relative;
             cursor: pointer;
-            background-color: rgb(95, 183, 255);
+            background-color: #5fb7ff;
 
             &::after {
                 opacity: 1;

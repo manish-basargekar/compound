@@ -23,6 +23,48 @@ const HabitCard = ({ habitList, setHabitList }) => {
 				<div key={t.id} className={`${Style.task}`}>
 					<div className={Style.taskWrapper}>
 						<div className={Style.taskContent}>
+							<div className={Style.taskOption}>
+								<svg
+									xmlns="http://www.w3.org/2000/svg"
+									width="16"
+									height="16"
+									viewBox="0 0 24 24"
+									fill="currentColor"
+									strokeWidth="2"
+									// class="ai ai-DragVerticalFill"
+								>
+									<path
+										fill-rule="evenodd"
+										clip-rule="evenodd"
+										d="M16 2a2 2 0 1 1 0 4 2 2 0 0 1 0-4z"
+									/>
+									<path
+										fill-rule="evenodd"
+										clip-rule="evenodd"
+										d="M16 10a2 2 0 1 1 0 4 2 2 0 0 1 0-4z"
+									/>
+									<path
+										fill-rule="evenodd"
+										clip-rule="evenodd"
+										d="M8 18a2 2 0 1 1 0 4 2 2 0 0 1 0-4z"
+									/>
+									<path
+										fill-rule="evenodd"
+										clip-rule="evenodd"
+										d="M16 18a2 2 0 1 1 0 4 2 2 0 0 1 0-4z"
+									/>
+									<path
+										fill-rule="evenodd"
+										clip-rule="evenodd"
+										d="M8 2a2 2 0 1 1 0 4 2 2 0 0 1 0-4z"
+									/>
+									<path
+										fill-rule="evenodd"
+										clip-rule="evenodd"
+										d="M8 10a2 2 0 1 1 0 4 2 2 0 0 1 0-4z"
+									/>
+								</svg>
+							</div>
 							<div
 								className={
 									t.done ? `${Style.checkboxDone}` : `${Style.checkbox}`
@@ -36,26 +78,8 @@ const HabitCard = ({ habitList, setHabitList }) => {
 							>
 								{t.title}
 							</div>
-							<div className={Style.taskOption}>
-								<svg
-									stroke="currentColor"
-									fill="none"
-									strokeWidth="2"
-									viewBox="0 0 24 24"
-									strokeLinecap="round"
-									strokeLinejoin="round"
-									// class="Task__ActionIcon-wbyoqt-8 fGldON"
-									height="1em"
-									width="1em"
-									xmlns="http://www.w3.org/2000/svg"
-								>
-									<circle cx="12" cy="12" r="1"></circle>
-									<circle cx="12" cy="5" r="1"></circle>
-									<circle cx="12" cy="19" r="1"></circle>
-								</svg>
-							</div>
 						</div>
-						<div className={Style.tags}>
+						{/* <div className={Style.tags}>
 							<div className={Style.tag}>🔥 14</div>
 							<div className={Style.tag}>
 								<svg
@@ -75,7 +99,7 @@ const HabitCard = ({ habitList, setHabitList }) => {
 								</svg>
 								<span className={Style.tagType}>Daily</span>
 							</div>
-						</div>
+						</div> */}
 					</div>
 				</div>
 			))}

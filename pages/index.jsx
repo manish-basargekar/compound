@@ -67,7 +67,7 @@ export default function Home() {
 			<div className={Style.container}>
 				<div className={Style.tasklist}>
 					<div className={Style.head}>
-						<h3>Tasks remaining today</h3>
+						<h3>Daily checklist</h3>
 						<div className={Style.outof}>
 							<span className={Style.status}>
 								{habitList.filter((f) => f.done === true).length}/
