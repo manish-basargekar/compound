@@ -7,7 +7,7 @@
     background-color: #fff;
     border-radius: 10px;
     box-shadow: rgba(0, 0, 0, 0.08) 0px 1px 3px 0px;
-    width: 500px;
+    width: 600px;
     font-size: 1rem;
     display: flex;
     margin: auto;
@@ -15,10 +15,10 @@
     position: relative;
 
     &:hover {
-        cursor: pointer;
+        // cursor: pointer;
         // font-style: italic;
         // text-decoration: line-through;
-        color: rgb(150, 146, 146);
+        // color: rgb(150, 146, 146);
     }
 
     .taskContent {
@@ -31,7 +31,15 @@
             right: 10px;
             bottom: 0px;
             display: flex;
+            cursor: pointer;
             background: rgb(255, 255, 255) none repeat scroll 0% 0%;
+            
+            &:hover{
+                svg{
+
+                    opacity: .7;
+                }
+            }
         }
 
         .checkbox,
@@ -61,6 +69,10 @@
                 top: 30%;
                 left: 25%;
                 // background-color: blue;
+            }
+
+            &:hover{
+                border: 1px solid rgb(95, 183, 255);
             }
         }
 
@@ -124,7 +136,8 @@
     background: transparent none repeat scroll 0% 0%;
     resize: none;
     // line-height: 20px;
-    cursor: pointer;
+    // cursor: pointer;
+    cursor: default;
     flex-wrap: wrap;
     word-break: break-word;
 }

@@ -1,11 +1,8 @@
 import { useState } from "react";
 import Style from "./HabitCard.module.scss";
 
-const HabitCard = ({habitList, setHabitList}) => {
-
+const HabitCard = ({ habitList, setHabitList }) => {
 	const [toggleDone, setToggleDone] = useState(false);
-
-	
 
 	const toggleTaskState = (id) => {
 		// console.log(habit)

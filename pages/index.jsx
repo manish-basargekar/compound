@@ -5,6 +5,15 @@ import HabitCard from "../components/habitCard/HabitCard";
 import { nanoid } from "nanoid";
 
 export default function Home() {
+
+	// What I want to do
+	// Reset done state of every habit to false every 24 hours 
+	// Initial start date
+
+	// time created
+	// if time created + 24 hours > current time set done to false
+
+
 	const tasks = [
 		{
 			id: 1,
