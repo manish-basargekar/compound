@@ -1,7 +1,7 @@
 import { useState } from "react";
-import Style from "./HabitCard.module.scss";
+import Style from "./Task.module.scss";
 
-const HabitCard = ({ habitList, setHabitList }) => {
+const Task= ({ habitList, setHabitList }) => {
 	const [toggleDone, setToggleDone] = useState(false);
 
 	const toggleTaskState = (id) => {
@@ -107,4 +107,4 @@ const HabitCard = ({ habitList, setHabitList }) => {
 	);
 };
 
-export default HabitCard;
+export default Task;

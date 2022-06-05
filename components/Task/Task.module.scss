@@ -7,7 +7,8 @@
     // background-color: #fff;
     border-radius: 10px;
     // box-shadow: rgba(0, 0, 0, 0.08) 0px 1px 3px 0px;
-    width: 600px;
+    // width: 600px;
+    width: 100%;
     font-size: 1rem;
     display: flex;
     margin: auto;
@@ -145,7 +146,7 @@
     resize: none;
     // line-height: 20px;
     // cursor: pointer;
-    cursor: default;
+    // cursor: default;
     flex-wrap: wrap;
     word-break: break-word;
 }
