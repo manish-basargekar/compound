@@ -3,7 +3,7 @@ import { useState } from "react";
 import HabitCard from "../components/habitCard/HabitCard";
 
 import { nanoid } from "nanoid";
-
+import TextareaAutosize from "react-textarea-autosize";
 export default function Home() {
 
 	// What I want to do
@@ -81,35 +81,40 @@ export default function Home() {
 							</div>
 						</div>
 					</div>
+					<HabitCard habitList={habitList} setHabitList={setHabitList} />
 					<form onSubmit={addHabit}>
 						<div className={Style.addTask}>
-							<button type="submit" className={Style.addHabitBtn}>
-								<svg
-									stroke="currentColor"
-									fill="none"
-									strokeWidth="2"
-									viewBox="0 0 24 24"
-									strokeLinecap="round"
-									strokeLinejoin="round"
-									// class="AddTask__AddIcon-h0zgp9-0 fwbGyI"
-									height="1em"
-									width="1em"
-									xmlns="http://www.w3.org/2000/svg"
-								>
-									<line x1="12" y1="5" x2="12" y2="19"></line>
-									<line x1="5" y1="12" x2="19" y2="12"></line>
-								</svg>
-							</button>
-							<input
+							<TextareaAutosize
 								required
-								placeholder="Add task"
+								placeholder="Add a task"
 								className={Style.addHabitInput}
 								value={newHabit}
 								onChange={(e) => setNewHabit(e.target.value)}
 							/>
+							<button
+								type="submit"
+								disabled={newHabit ? false : true}
+								className={Style.addHabitBtn}
+								// style={{ backgroundColor: newHabit ? "#F900BF" : "none" }}
+							>
+								<svg
+									xmlns="http://www.w3.org/2000/svg"
+									width="16"
+									height="16"
+									viewBox="0 0 24 24"
+									fill="none"
+									stroke="currentColor"
+									strokeWidth="2"
+									strokeLinecap="round"
+									strokeLinejoin="round"
+									// class="ai ai-ArrowUp"
+								>
+									<path d="M12 20V4" />
+									<path d="M5 11l7-7 7 7" />
+								</svg>
+							</button>
 						</div>
 					</form>
-					<HabitCard habitList={habitList} setHabitList={setHabitList} />
 				</div>
 			</div>
 		</>
