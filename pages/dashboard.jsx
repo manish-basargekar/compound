@@ -4,14 +4,11 @@ import Task from "../components/Task/Task";
 
 import { nanoid } from "nanoid";
 import TextareaAutosize from "react-textarea-autosize";
+
+import { EditText, EditTextarea } from "react-edit-text";
+import "react-edit-text/dist/index.css";
+
 export default function Home() {
-	// What I want to do
-	// Reset done state of every habit to false every 24 hours
-	// Initial start date
-
-	// time created
-	// if time created + 24 hours > current time set done to false
-
 	const tasks = [
 		{
 			id: 1,
@@ -78,7 +75,23 @@ export default function Home() {
 							<li>Shopping list</li>
 						</ul>
 					</div>
-					<button className={Style.createListBtn}>New list</button>
+					<button className={Style.createListBtn}>
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							width="16"
+							height="16"
+							viewBox="0 0 24 24"
+							fill="none"
+							stroke="currentColor"
+							strokeWidth="2"
+							strokeLinecap="round"
+							strokeLinejoin="round"
+							// class="ai ai-Plus"
+						>
+							<path d="M12 20v-8m0 0V4m0 8h8m-8 0H4" />
+						</svg>
+						<span>New list</span>
+					</button>
 				</div>
 
 				<main className={Style.main}>
@@ -98,27 +111,28 @@ export default function Home() {
 					</div>
 					<div className={Style.tasklist}>
 						<div className={Style.head}>
-							<h1>Daily checklist</h1>
+							{/* <h1>Daily checklist</h1> */}
+							<EditText placeholder="Untitled" className={Style.listTitle} />
 						</div>
 						<Task habitList={habitList} setHabitList={setHabitList} />
 						<form onSubmit={addHabit}>
 							<div className={Style.addTask}>
-								{/* <div className={Style.icon}>
+								<div className={Style.icon}>
 									<svg
-										stroke="currentColor"
-										fill="none"
-										stroke-width="2"
-										viewBox="0 0 24 24"
-										stroke-linecap="round"
-										stroke-linejoin="round"
-										height="1em"
-										width="1em"
 										xmlns="http://www.w3.org/2000/svg"
+										width="16"
+										height="16"
+										viewBox="0 0 24 24"
+										fill="none"
+										stroke="currentColor"
+										strokeWidth="2"
+										strokeLinecap="round"
+										strokeLinejoin="round"
+										// class="ai ai-Plus"
 									>
-										<line x1="12" y1="5" x2="12" y2="19"></line>
-										<line x1="5" y1="12" x2="19" y2="12"></line>
+										<path d="M12 20v-8m0 0V4m0 8h8m-8 0H4" />
 									</svg>
-								</div> */}
+								</div>
 								<TextareaAutosize
 									maxRows={5}
 									required
@@ -152,42 +166,6 @@ export default function Home() {
 							</button>
 						</form>
 					</div>
-					{/* <div className={Style.bottomBar}>
-						<form onSubmit={addHabit}>
-							<div className={Style.addTask}>
-								<TextareaAutosize
-									maxRows={5}
-									required
-									placeholder="Add a task"
-									className={Style.addHabitInput}
-									value={newHabit}
-									onChange={(e) => setNewHabit(e.target.value)}
-								/>
-							</div>
-							<button
-								type="submit"
-								disabled={newHabit ? false : true}
-								className={Style.addHabitBtn}
-								// style={{ backgroundColor: newHabit ? "#F900BF" : "none" }}
-							>
-								<svg
-									xmlns="http://www.w3.org/2000/svg"
-									width="16"
-									height="16"
-									viewBox="0 0 24 24"
-									fill="none"
-									stroke="currentColor"
-									strokeWidth="2"
-									strokeLinecap="round"
-									strokeLinejoin="round"
-									// class="ai ai-ArrowUp"
-								>
-									<path d="M12 20V4" />
-									<path d="M5 11l7-7 7 7" />
-								</svg>
-							</button>
-						</form>
-					</div> */}
 				</main>
 			</div>
 		</>
