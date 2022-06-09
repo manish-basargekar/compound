@@ -8,7 +8,7 @@ import TextareaAutosize from "react-textarea-autosize";
 import { EditText, EditTextarea } from "react-edit-text";
 import "react-edit-text/dist/index.css";
 
-export default function Home() {
+export default function Dashboard() {
 	const tasks = [
 		{
 			id: 1,
