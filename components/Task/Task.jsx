@@ -36,13 +36,16 @@ const Task = ({ habitList, setHabitList }) => {
 	};
 	return (
 		<>
-			{habitList.map((t) => (
+
+			
+
+			{ habitList.map((t) => (
 				<div key={t.id} className={`${Style.task}`}>
 					<div className={Style.taskWrapper}>
 						<div className={Style.taskContent}>
 							<div
 								className={
-									t.done ? `${Style.checkboxDone}` : `${Style.checkbox}`
+									t.status ? `${Style.checkboxDone}` : `${Style.checkbox}`
 								}
 								onClick={(id) => toggleTaskState(t.id)}
 							></div>

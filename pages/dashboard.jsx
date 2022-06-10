@@ -1,5 +1,5 @@
 import Style from "../styles/Home.module.scss";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Task from "../components/Task/Task";
 
 import { nanoid } from "nanoid";
@@ -8,7 +8,16 @@ import TextareaAutosize from "react-textarea-autosize";
 import { EditText, EditTextarea } from "react-edit-text";
 import "react-edit-text/dist/index.css";
 
-export default function Dashboard() {
+import { auth, logout, db } from "../firebase";
+import { useAuthState } from "react-firebase-hooks/auth";
+
+import { useRouter } from "next/router";
+
+import { getDoc, doc, query, collection, onSnapshot } from "firebase/firestore";
+
+import Link from "next/link";
+
+function Dashboard() {
 	const tasks = [
 		{
 			id: 1,
@@ -45,7 +54,17 @@ export default function Dashboard() {
 
 	const [newHabit, setNewHabit] = useState("");
 
-	const [habitList, setHabitList] = useState(tasks);
+	const [habitList, setHabitList] = useState(null);
+
+	const [user, loading, error] = useAuthState(auth);
+
+	const [curentList, setCurrentList] = useState(null);
+
+	const [allLists, setAllLists] = useState([]);
+
+	const [currentHeading, setCurrentHeading] = useState("");
+
+	const router = useRouter();
 
 	const addHabit = (e) => {
 		e.preventDefault();
@@ -54,13 +73,73 @@ export default function Dashboard() {
 		setNewHabit("");
 	};
 
-	const percent =
-		(habitList.filter((f) => f.done === true).length / habitList.length) * 100;
+	useEffect(() => {
+		if (loading) return;
+		if (!user) return router.push("/login");
+
+		// const fetchUsername = async () => {
+		// 	const currentUser = await getDoc(doc(db, `users/${user?.uid}`));
+		// 	console.log(currentUser.data());
+		// 	// setUserDetails(currentUser.data());
+		// };
+
+		// fetchUsername();
+		// console.log(user);
+	}, [user, loading]);
+
+	useEffect(() => {
+		if (loading) return;
+		if (!user) return router.push("/login");
+
+		// const fetchLists = async () => {
+		// 	const currentUserLists = await getDoc(doc(db, `users/${user?.uid}/lists`));
+		// 	console.log(currentUserLists.data());
+		// 	// console.log(currentUser.data());
+		// 	// setAllLists(currentUser.data().lists);
+		// };
+
+		const useListsPath = `users/${user?.uid}/lists`;
+
+		const q = query(collection(db, useListsPath));
+
+		onSnapshot(q, (snapshot) => {
+			// const lists = [];
+			// snapshot.forEach((doc) => {
+			// 	lists.push(doc.data());
+			// });
+			// setAllLists(lists);
+			setAllLists(snapshot.docs.map((doc) => doc.data()));
+		});
+
+		// console.log(allLists);
+
+		// fetchLists();
+	}, [user]);
+
+	const fetchListContent = (listId) => {
+		// const fetchList = async (listId) => {
+		// 	const currentList = await getDoc(doc(db, `lists/${listId}`));
+		// 	console.log(currentList.data());
+		// 	// setCurrentList(currentList.data());
+		// };
+
+		// fetchList(listId);
+		// console.log(listId);
+		// console.log(allLists);
+
+		// find list id from all lists
+		const list = allLists.find((f) => f.uid === listId);
+		console.log(list.listContent);
+		setCurrentHeading(list.name);
+		setHabitList(list.listContent);
+	};
 
 	return (
 		<>
+			{/* {console.log(allLists)} */}
 			<div className={Style.container}>
 				<div className={Style.sidebar}>
+					<button onClick={logout}>logout</button>
 					<div className={Style.sidebar__header}>
 						<h1>Checklist</h1>
 					</div>
@@ -70,9 +149,22 @@ export default function Dashboard() {
 							{/* <button>+</button> */}
 						</div>
 						<ul>
-							<li>Daily checklist</li>
-							<li>To do</li>
-							<li>Shopping list</li>
+							{
+								// allLists.map()
+								allLists.map((list) => (
+									<li
+										key={list.uid}
+										onClick={() => {
+											fetchListContent(list.uid);
+										}}
+									>
+										{/* <Link href={`/list/${list.id}`}>
+											<a>{list.name}</a>
+										</Link> */}
+										{list.name}
+									</li>
+								))
+							}
 						</ul>
 					</div>
 					<button className={Style.createListBtn}>
@@ -94,30 +186,74 @@ export default function Dashboard() {
 					</button>
 				</div>
 
-				<main className={Style.main}>
-					<div className={Style.navbar}>
-						<div className={Style.outof}>
-							<span className={Style.status}>
-								{habitList.filter((f) => f.done === true).length}/
-								{habitList.length}
-							</span>
-							<div className={Style.progressWrapper}>
-								<div
-									className={Style.bar}
-									style={{ width: `${percent}%` }}
-								></div>
+				{!habitList ? (
+					<div className={Style.Defaultmain}>
+						Create or select a new list to continue
+					</div>
+				) : (
+					<main className={Style.main}>
+						<div className={Style.navbar}>
+							<div className={Style.outof}>
+								<span className={Style.status}>
+									{habitList.filter((f) => f.tatus === true).length}/
+									{habitList.length}
+								</span>
+								<div className={Style.progressWrapper}>
+									<div
+										className={Style.bar}
+										style={{
+											width: `${
+												(habitList.filter((f) => f.done === true).length /
+													habitList.length) *
+												100
+											}%`,
+										}}
+									></div>
+								</div>
 							</div>
 						</div>
-					</div>
-					<div className={Style.tasklist}>
-						<div className={Style.head}>
-							{/* <h1>Daily checklist</h1> */}
-							<EditText placeholder="Untitled" className={Style.listTitle} />
-						</div>
-						<Task habitList={habitList} setHabitList={setHabitList} />
-						<form onSubmit={addHabit}>
-							<div className={Style.addTask}>
-								<div className={Style.icon}>
+						<div className={Style.tasklist}>
+							<div className={Style.head}>
+								{/* <h1>Daily checklist</h1> */}
+								<EditText
+									defaultValue={currentHeading}
+									className={Style.listTitle}
+								/>
+							</div>
+							<Task habitList={habitList} setHabitList={setHabitList} />
+							<form onSubmit={addHabit}>
+								<div className={Style.addTask}>
+									<div className={Style.icon}>
+										<svg
+											xmlns="http://www.w3.org/2000/svg"
+											width="16"
+											height="16"
+											viewBox="0 0 24 24"
+											fill="none"
+											stroke="currentColor"
+											strokeWidth="2"
+											strokeLinecap="round"
+											strokeLinejoin="round"
+											// class="ai ai-Plus"
+										>
+											<path d="M12 20v-8m0 0V4m0 8h8m-8 0H4" />
+										</svg>
+									</div>
+									<TextareaAutosize
+										maxRows={5}
+										required
+										placeholder="Add a task"
+										className={Style.addHabitInput}
+										value={newHabit}
+										onChange={(e) => setNewHabit(e.target.value)}
+									/>
+								</div>
+								<button
+									type="submit"
+									disabled={newHabit ? false : true}
+									className={Style.addHabitBtn}
+									// style={{ backgroundColor: newHabit ? "#F900BF" : "none" }}
+								>
 									<svg
 										xmlns="http://www.w3.org/2000/svg"
 										width="16"
@@ -128,46 +264,19 @@ export default function Dashboard() {
 										strokeWidth="2"
 										strokeLinecap="round"
 										strokeLinejoin="round"
-										// class="ai ai-Plus"
+										// class="ai ai-ArrowUp"
 									>
-										<path d="M12 20v-8m0 0V4m0 8h8m-8 0H4" />
+										<path d="M12 20V4" />
+										<path d="M5 11l7-7 7 7" />
 									</svg>
-								</div>
-								<TextareaAutosize
-									maxRows={5}
-									required
-									placeholder="Add a task"
-									className={Style.addHabitInput}
-									value={newHabit}
-									onChange={(e) => setNewHabit(e.target.value)}
-								/>
-							</div>
-							<button
-								type="submit"
-								disabled={newHabit ? false : true}
-								className={Style.addHabitBtn}
-								// style={{ backgroundColor: newHabit ? "#F900BF" : "none" }}
-							>
-								<svg
-									xmlns="http://www.w3.org/2000/svg"
-									width="16"
-									height="16"
-									viewBox="0 0 24 24"
-									fill="none"
-									stroke="currentColor"
-									strokeWidth="2"
-									strokeLinecap="round"
-									strokeLinejoin="round"
-									// class="ai ai-ArrowUp"
-								>
-									<path d="M12 20V4" />
-									<path d="M5 11l7-7 7 7" />
-								</svg>
-							</button>
-						</form>
-					</div>
-				</main>
+								</button>
+							</form>
+						</div>
+					</main>
+				)}
 			</div>
 		</>
 	);
 }
+
+export default Dashboard;

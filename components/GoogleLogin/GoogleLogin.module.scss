@@ -1,0 +1,19 @@
+.btn{
+    background-color: #fff;
+    // box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
+    border: none;
+    border-radius: 33px;
+    border: 2px solid #eee;
+    display: flex;
+    justify-content: space-between;
+    padding: 1rem;
+    cursor: pointer;
+
+    span{
+        // align-self: center;
+    }
+
+    &:hover{
+        opacity: .7;
+    }
+}

@@ -170,6 +170,14 @@
     align-items: center;
     position: relative;
   }
+
+  .Defaultmain{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    // background-color: #19e712;
+    flex: 2;
+  }
 }
 
 .tasklist {
