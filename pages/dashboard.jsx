@@ -13,9 +13,19 @@ import { useAuthState } from "react-firebase-hooks/auth";
 
 import { useRouter } from "next/router";
 
-import { getDoc, doc, query, collection, onSnapshot } from "firebase/firestore";
+import {
+	getDoc,
+	doc,
+	query,
+	collection,
+	onSnapshot,
+	addDoc,
+	updateDoc,
+	arrayUnion,
+} from "firebase/firestore";
 
 import Link from "next/link";
+import toast from "react-hot-toast";
 
 function Dashboard() {
 	const tasks = [
@@ -68,46 +78,35 @@ function Dashboard() {
 
 	const addHabit = (e) => {
 		e.preventDefault();
-		const addNewHabit = { id: nanoid(), title: newHabit, done: false };
+		const addNewHabit = { id: nanoid(), title: newHabit, status: false };
+		addTaskToDb(addNewHabit);
 		setHabitList([...habitList, addNewHabit]);
 		setNewHabit("");
+	};
+
+	const addTaskToDb = async (task) => {
+		const listPath = `users/${user.uid}/lists/${curentList.uid}`;
+
+		const listRef = doc(db, listPath);
+
+		await updateDoc(listRef, {
+			listContent: arrayUnion(task),
+		});
 	};
 
 	useEffect(() => {
 		if (loading) return;
 		if (!user) return router.push("/login");
-
-		// const fetchUsername = async () => {
-		// 	const currentUser = await getDoc(doc(db, `users/${user?.uid}`));
-		// 	console.log(currentUser.data());
-		// 	// setUserDetails(currentUser.data());
-		// };
-
-		// fetchUsername();
-		// console.log(user);
 	}, [user, loading]);
 
 	useEffect(() => {
 		if (loading) return;
 		if (!user) return router.push("/login");
-
-		// const fetchLists = async () => {
-		// 	const currentUserLists = await getDoc(doc(db, `users/${user?.uid}/lists`));
-		// 	console.log(currentUserLists.data());
-		// 	// console.log(currentUser.data());
-		// 	// setAllLists(currentUser.data().lists);
-		// };
-
 		const useListsPath = `users/${user?.uid}/lists`;
 
 		const q = query(collection(db, useListsPath));
 
 		onSnapshot(q, (snapshot) => {
-			// const lists = [];
-			// snapshot.forEach((doc) => {
-			// 	lists.push(doc.data());
-			// });
-			// setAllLists(lists);
 			setAllLists(snapshot.docs.map((doc) => doc.data()));
 		});
 
@@ -117,18 +116,8 @@ function Dashboard() {
 	}, [user]);
 
 	const fetchListContent = (listId) => {
-		// const fetchList = async (listId) => {
-		// 	const currentList = await getDoc(doc(db, `lists/${listId}`));
-		// 	console.log(currentList.data());
-		// 	// setCurrentList(currentList.data());
-		// };
-
-		// fetchList(listId);
-		// console.log(listId);
-		// console.log(allLists);
-
-		// find list id from all lists
 		const list = allLists.find((f) => f.uid === listId);
+		setCurrentList(list);
 		console.log(list.listContent);
 		setCurrentHeading(list.name);
 		setHabitList(list.listContent);
@@ -220,7 +209,12 @@ function Dashboard() {
 									className={Style.listTitle}
 								/>
 							</div>
-							<Task habitList={habitList} setHabitList={setHabitList} />
+							<Task
+								habitList={habitList}
+								setHabitList={setHabitList}
+								currentList={curentList}
+								user={user}
+							/>
 							<form onSubmit={addHabit}>
 								<div className={Style.addTask}>
 									<div className={Style.icon}>

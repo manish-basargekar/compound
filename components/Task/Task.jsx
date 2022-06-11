@@ -1,24 +1,39 @@
 import { useState } from "react";
 import Style from "./Task.module.scss";
-
+import { doc, updateDoc, arrayUnion, arrayRemove } from "firebase/firestore";
+import { db } from "../../firebase";
 import { EditText, EditTextarea } from "react-edit-text";
 import "react-edit-text/dist/index.css";
 
-const Task = ({ habitList, setHabitList }) => {
+const Task = ({ habitList, setHabitList , currentList, user}) => {
 	const [toggleDone, setToggleDone] = useState(false);
 
-	const toggleTaskState = (id) => {
-		// console.log(habit)
-		// const HabitDone = {...habit, done: !habit.done}
-		const updatedHabits = habitList.map((h) => {
-			if (id === h.id) {
-				return { ...h, done: !h.done };
-			}
-			return h;
+	const toggleTaskState = (task) => {
+		console.log(task)
+		const updatedTask = { ...task, status: !task.status };
+		updateTaskStatus(updatedTask, task);
+		// setHabitList({ ...habitList, [task.id]: updatedTask });
+
+
+
+		
+	};
+
+	// write a function to update task status in db
+	const updateTaskStatus = async (updatedTask, oldTask) => {
+		const listPath = `users/${user.uid}/lists/${currentList.uid}`;
+		const listRef = doc(db, listPath);
+
+		await updateDoc(listRef, {
+			listContent: arrayRemove(oldTask),
 		});
 
-		setHabitList(updatedHabits);
-	};
+
+		await updateDoc(listRef, {
+			listContent: arrayUnion(updatedTask),
+		});
+	}
+
 
 	const handleEditTask = (value, id) => {
 		console.log(value, id);
@@ -47,7 +62,7 @@ const Task = ({ habitList, setHabitList }) => {
 								className={
 									t.status ? `${Style.checkboxDone}` : `${Style.checkbox}`
 								}
-								onClick={(id) => toggleTaskState(t.id)}
+								onClick={() => toggleTaskState(t)}
 							></div>
 							<EditTextarea
 								style={{
