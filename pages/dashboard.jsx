@@ -15,6 +15,7 @@ import { useRouter } from "next/router";
 
 import {
 	getDoc,
+	setDoc,
 	doc,
 	query,
 	collection,
@@ -78,20 +79,21 @@ function Dashboard() {
 
 	const addHabit = (e) => {
 		e.preventDefault();
-		const addNewHabit = { id: nanoid(), title: newHabit, status: false };
+		const addNewHabit = { uid: nanoid(), taskTitle: newHabit, status: false };
 		addTaskToDb(addNewHabit);
-		setHabitList([...habitList, addNewHabit]);
+		// setHabitList([...habitList, addNewHabit]);
 		setNewHabit("");
 	};
 
 	const addTaskToDb = async (task) => {
-		const listPath = `users/${user.uid}/lists/${curentList.uid}`;
+		const listPath = `users/${user.uid}/lists/${curentList.uid}/tasks`;
 
-		const listRef = doc(db, listPath);
+		// const listRef = doc(db, listPath);
 
-		await updateDoc(listRef, {
-			listContent: arrayUnion(task),
-		});
+		//add task to sub collection tasks
+		const taskRef = doc(db, listPath, task.uid);
+
+		await setDoc(taskRef, task);
 	};
 
 	useEffect(() => {
@@ -109,18 +111,40 @@ function Dashboard() {
 		onSnapshot(q, (snapshot) => {
 			setAllLists(snapshot.docs.map((doc) => doc.data()));
 		});
-
-		// console.log(allLists);
-
-		// fetchLists();
 	}, [user]);
+
+	// useEffect(() => {
+	// 	const list = allLists.find((f) => f.uid === "D4krShYejIFC1IPVsf6M");
+	// 	setCurrentList(list);
+	// 	setCurrentHeading(list.name);
+	// 	fetchListContent(list.uid)
+	// },[allLists]);
+
+	// const fetchListContent = (listId) => {
+
+	// 	console.log(list);
+	// 	setCurrentHeading(list.name);
+	// 	setHabitList(list.listContent);
+	// };
+
+
+
+
 
 	const fetchListContent = (listId) => {
 		const list = allLists.find((f) => f.uid === listId);
 		setCurrentList(list);
-		console.log(list.listContent);
+		console.log(list);
 		setCurrentHeading(list.name);
-		setHabitList(list.listContent);
+
+		const taskPath = `users/${user.uid}/lists/${listId}/tasks`;
+
+		const taskRef = collection(db, taskPath);
+		// fetch all tasks from the current list
+		onSnapshot(taskRef, (snapshot) => {
+			// console.log(snapshot.docs.map((doc) => doc.data()));
+			setHabitList(snapshot.docs.map((doc) => doc.data()));
+		});
 	};
 
 	return (

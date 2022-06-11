@@ -1,17 +1,18 @@
 import { useState } from "react";
 import Style from "./Task.module.scss";
-import { doc, updateDoc, arrayUnion, arrayRemove } from "firebase/firestore";
+import { doc, updateDoc, arrayUnion, arrayRemove, collection, where } from "firebase/firestore";
 import { db } from "../../firebase";
 import { EditText, EditTextarea } from "react-edit-text";
 import "react-edit-text/dist/index.css";
+import { query, onSnapshot } from "firebase/firestore";
 
 const Task = ({ habitList, setHabitList , currentList, user}) => {
-	const [toggleDone, setToggleDone] = useState(false);
+	// const [toggleDone, setToggleDone] = useState(false);
 
 	const toggleTaskState = (task) => {
-		console.log(task)
-		const updatedTask = { ...task, status: !task.status };
-		updateTaskStatus(updatedTask, task);
+		// console.log(task)
+		// const updatedTask = { ...task, status: !task.status };
+		updateTaskStatus(task);
 		// setHabitList({ ...habitList, [task.id]: updatedTask });
 
 
@@ -20,42 +21,25 @@ const Task = ({ habitList, setHabitList , currentList, user}) => {
 	};
 
 	// write a function to update task status in db
-	const updateTaskStatus = async (updatedTask, oldTask) => {
-		const listPath = `users/${user.uid}/lists/${currentList.uid}`;
-		const listRef = doc(db, listPath);
+	const updateTaskStatus = async (task) => {
+		const listPath = `users/${user.uid}/lists/${currentList.uid}/tasks/${task.uid}`;
 
-		await updateDoc(listRef, {
-			listContent: arrayRemove(oldTask),
-		});
-
-
-		await updateDoc(listRef, {
-			listContent: arrayUnion(updatedTask),
-		});
+		const listRef = doc(db, listPath);  
+		await updateDoc(listRef, { status: !task.status });
 	}
 
 
 	const handleEditTask = (value, id) => {
 		console.log(value, id);
-
-		// if (value === "") {
-		// 	return;
-		// }
-		//  if value is empty string, then delete task
-		if (value.value === "") {
-			console.log("delete task");
-			const updatedHabits = habitList.filter((h) => h.id !== id);
-			setHabitList(updatedHabits);
-			return;
-		}
 	};
+
+
+
 	return (
 		<>
-
-			
-
-			{ habitList.map((t) => (
-				<div key={t.id} className={`${Style.task}`}>
+			{habitList.map((t) => (
+				<div key={t.uid} className={`${Style.task}`}>
+					{/* {console.log(t)} */}
 					<div className={Style.taskWrapper}>
 						<div className={Style.taskContent}>
 							<div
@@ -70,9 +54,9 @@ const Task = ({ habitList, setHabitList , currentList, user}) => {
 									width: "100%",
 								}}
 								// rows={3}
-								defaultValue={t.title}
+								defaultValue={t.taskTitle}
 								className={
-									t.done ? `${Style.taskTitleChecked}` : `${Style.taskTitle}`
+									t.status ? `${Style.taskTitleChecked}` : `${Style.taskTitle}`
 								}
 								inputClassName={Style.taskTitleInput}
 								onSave={(value) => handleEditTask(value, t.id)}
