@@ -5,6 +5,7 @@ import { db } from "../../firebase";
 import { EditText, EditTextarea } from "react-edit-text";
 import "react-edit-text/dist/index.css";
 import { query, onSnapshot } from "firebase/firestore";
+import { async } from "@firebase/util";
 
 const Task = ({ habitList, setHabitList , currentList, user}) => {
 	// const [toggleDone, setToggleDone] = useState(false);
@@ -29,9 +30,23 @@ const Task = ({ habitList, setHabitList , currentList, user}) => {
 	}
 
 
-	const handleEditTask = (value, id) => {
-		console.log(value, id);
+	const handleEditTask = (e, id) => {
+		console.log(e.value);
+		console.log(id);
+		
+		updateTaskonDb(e.value, id);
+		
 	};
+
+
+	const updateTaskonDb = async(updatedTitle, uid) => {
+		const listPath = `users/${user.uid}/lists/${currentList.uid}/tasks/${uid}`;
+
+		const listRef = doc(db, listPath);
+		await updateDoc(listRef, {
+			taskTitle: updatedTitle,
+		});
+	}
 
 
 
@@ -48,6 +63,7 @@ const Task = ({ habitList, setHabitList , currentList, user}) => {
 								}
 								onClick={() => toggleTaskState(t)}
 							></div>
+							{/* {console.log(t.taskTitle)} */}
 							<EditTextarea
 								style={{
 									height: "max-content",
@@ -59,7 +75,7 @@ const Task = ({ habitList, setHabitList , currentList, user}) => {
 									t.status ? `${Style.taskTitleChecked}` : `${Style.taskTitle}`
 								}
 								inputClassName={Style.taskTitleInput}
-								onSave={(value) => handleEditTask(value, t.id)}
+								onSave={(e) => handleEditTask(e, t.uid)}
 							/>
 						</div>
 					</div>

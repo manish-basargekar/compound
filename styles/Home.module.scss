@@ -84,6 +84,9 @@
         cursor: pointer;
         padding: 0.3rem;
         border-radius: 4px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
 
         &:hover {
           background-color: #e7e7e6;
@@ -101,7 +104,7 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      gap: .4rem;
+      gap: 0.4rem;
     }
   }
 
@@ -117,7 +120,26 @@
     justify-content: flex-end;
     align-items: center;
     // background-color: #F900BF;
-    .outof {
+
+    .logoutBtn{
+      padding: .5rem 2rem;
+      cursor: pointer;
+    }
+   
+  }
+
+  .main {
+    // background-color: #f900bf;
+    // width: calc(100% - 18rem);
+    flex: 2;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    position: relative;
+
+
+     .outof {
       color: rgb(89, 114, 163);
       display: flex;
       -moz-box-align: center;
@@ -125,10 +147,10 @@
       font-size: 14px;
       padding-left: 10px;
       // margin-bottom: 15px;
-      width: 120px;
+      width: 100%;
 
       .status {
-        text-decoration: underline;
+        // text-decoration: underline;
         // cursor: pointer;
         font-size: 12px;
         min-width: 16px;
@@ -158,20 +180,7 @@
     }
   }
 
-  
-
-  .main {
-    // background-color: #f900bf;
-    // width: calc(100% - 18rem);
-    flex: 2;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
-    position: relative;
-  }
-
-  .Defaultmain{
+  .Defaultmain {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -179,6 +188,8 @@
     flex: 2;
   }
 }
+
+// f
 
 .tasklist {
   margin-top: 5rem;
@@ -209,7 +220,7 @@
       height: 2rem;
       display: flex;
       justify-content: center;
-      align-items:  center;
+      align-items: center;
       // background-color: #19e712;
       // align-self: flex-end;
     }
@@ -232,7 +243,6 @@
       // bottom: 5px;
       background-color: #19e712;
       align-self: flex-end;
-    
 
       &:hover {
         //  background-color: rgba(220, 228, 243, 0.5);
@@ -243,8 +253,8 @@
       }
       &:disabled {
         cursor: not-allowed;
-           background-color: #f7f6f3;
-    // border: 2px solid #eee;
+        background-color: #f7f6f3;
+        // border: 2px solid #eee;
       }
     }
   }
@@ -292,7 +302,6 @@
       width: 100%;
       // width: calc(100% - 1rem);
       // background-color: hotpink;
-      
     }
   }
 
@@ -304,5 +313,14 @@
     font-weight: 700;
     // background-color: blue;
     // margin-bottom: 1rem;
+
+    .listTitle {
+      height: max-content !important;
+    }
+
+    .listTitleInput {
+      height: max-content !important;
+      width: 100%;
+    }
   }
 }
