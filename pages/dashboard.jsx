@@ -1,4 +1,4 @@
-import Style from "../styles/Home.module.scss";
+import Style from "../styles/Dashboard.module.scss";
 import { useState, useEffect } from "react";
 import Task from "../components/Task/Task";
 
