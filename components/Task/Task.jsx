@@ -7,7 +7,7 @@ import "react-edit-text/dist/index.css";
 import { query, onSnapshot } from "firebase/firestore";
 import { async } from "@firebase/util";
 
-const Task = ({ habitList, setHabitList , currentList, user}) => {
+const Task = ({ habitList, setHabitList , currentListUid, user}) => {
 	// const [toggleDone, setToggleDone] = useState(false);
 
 	const toggleTaskState = (task) => {
@@ -23,7 +23,7 @@ const Task = ({ habitList, setHabitList , currentList, user}) => {
 
 	// write a function to update task status in db
 	const updateTaskStatus = async (task) => {
-		const listPath = `users/${user.uid}/lists/${currentList.uid}/tasks/${task.uid}`;
+		const listPath = `users/${user.uid}/lists/${currentListUid}/tasks/${task.uid}`;
 
 		const listRef = doc(db, listPath);  
 		await updateDoc(listRef, { status: !task.status });
@@ -40,7 +40,7 @@ const Task = ({ habitList, setHabitList , currentList, user}) => {
 
 
 	const updateTaskonDb = async(updatedTitle, uid) => {
-		const listPath = `users/${user.uid}/lists/${currentList.uid}/tasks/${uid}`;
+		const listPath = `users/${user.uid}/lists/${currentListUid}/tasks/${uid}`;
 
 		const listRef = doc(db, listPath);
 		await updateDoc(listRef, {

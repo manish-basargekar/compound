@@ -25,9 +25,6 @@ import {
 	arrayUnion,
 } from "firebase/firestore";
 
-import Link from "next/link";
-import toast from "react-hot-toast";
-
 function Dashboard() {
 	const [newHabit, setNewHabit] = useState("");
 
@@ -35,11 +32,13 @@ function Dashboard() {
 
 	const [user, loading, error] = useAuthState(auth);
 
-	const [curentList, setCurrentList] = useState(null);
+	const [currentListUid, setCurrentListUid] = useState(null);
 
 	const [allLists, setAllLists] = useState([]);
 
 	const [currentHeading, setCurrentHeading] = useState("");
+
+	const [sidebarOpen, setSidebarOpen] = useState(true);
 
 	const router = useRouter();
 
@@ -52,7 +51,7 @@ function Dashboard() {
 	};
 
 	const addTaskToDb = async (task) => {
-		const listPath = `users/${user.uid}/lists/${curentList.uid}/tasks`;
+		const listPath = `users/${user.uid}/lists/${currentListUid}/tasks`;
 		const taskRef = doc(db, listPath, task.uid);
 
 		await setDoc(taskRef, task);
@@ -73,13 +72,36 @@ function Dashboard() {
 		onSnapshot(q, (snapshot) => {
 			setAllLists(snapshot.docs.map((doc) => doc.data()));
 		});
+
+		const currentListPath = `users/${user?.uid}`;
+
+		const current = doc(db, currentListPath);
+
+		onSnapshot(current, (snapshot) => {
+			const data = snapshot.data();
+			setCurrentListUid(data.currentList.uid);
+			setCurrentHeading(data.currentList.name);
+			// console.log(data.currentList.uid);
+			fetchTasks(snapshot.data().currentList.uid);
+			// setCurrentHeading(allLists.find((f) => f.uid === curentListUid).name);
+		});
+		// console.log(allLists);
 	}, [user]);
 
-	const fetchListContent = (listId) => {
+	const HandleListClick = (listId) => {
 		const list = allLists.find((f) => f.uid === listId);
-		setCurrentList(list);
+		setCurrentListUid(list.uid);
 		setCurrentHeading(list.name);
+		// console.log(allLists);
 		fetchTasks(listId);
+		setCurrentListOnDb(list.uid, list.name);
+	};
+
+	const setCurrentListOnDb = async (listId, name) => {
+		const listPath = `users/${user.uid}`;
+		const listRef = doc(db, listPath);
+
+		await updateDoc(listRef, { currentList: { uid: listId, name: name } });
 	};
 
 	const fetchTasks = (listId) => {
@@ -94,12 +116,12 @@ function Dashboard() {
 	};
 
 	const handleEditSave = (e) => {
-		console.log(e.value);
+		// console.log(e.value);
 		updateHeadingonDb(e.value);
 	};
 
 	const updateHeadingonDb = async (newHeading) => {
-		const listPath = `users/${user.uid}/lists/${curentList.uid}`;
+		const listPath = `users/${user.uid}/lists/${currentListUid}`;
 		const listRef = doc(db, listPath);
 		await updateDoc(listRef, { name: newHeading });
 	};
@@ -125,15 +147,51 @@ function Dashboard() {
 		<>
 			{/* {console.log(allLists)} */}
 			<div className={Style.container}>
-				<div className={Style.sidebar}>
+				<div
+					className={Style.sidebar}
+					style={{
+						transform: sidebarOpen ? "translateX(0)" : "translateX(-100%)",
+					}}
+				>
 					<div className={Style.sidebar__header}>
 						<h1>Checklist</h1>
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							width="20"
+							height="20"
+							viewBox="0 0 24 24"
+							fill="none"
+							stroke="currentColor"
+							strokeWidth="2"
+							strokeLinecap="round"
+							strokeLinejoin="round"
+							// class="ai ai-TextAlignJustified"
+							onClick={() => setSidebarOpen(!sidebarOpen)}
+						>
+							<path d="M3 6h18M3 12h18M3 18h18" />
+						</svg>
 					</div>
 					<div className={Style.sidebar__content}>
 						<div className={Style.head}>
 							<h3>All lists</h3>
-							{/* <button>+</button> */}
+							<button onClick={CreateNewList}>
+								<svg
+									xmlns="http://www.w3.org/2000/svg"
+									width="20"
+									height="20"
+									viewBox="0 0 24 24"
+									fill="none"
+									stroke="#646262"
+									strokeWidth="2"
+									strokeLinecap="round"
+									strokeLinejoin="round"
+									// class="ai ai-Plus"
+								>
+									<path d="M12 20v-8m0 0V4m0 8h8m-8 0H4" />
+								</svg>
+							</button>
 						</div>
+						{/* {console.log(currentListUid)} */}
 						<ul>
 							{
 								// allLists.map()
@@ -141,7 +199,10 @@ function Dashboard() {
 									<li
 										key={list.uid}
 										onClick={() => {
-											fetchListContent(list.uid);
+											HandleListClick(list.uid);
+										}}
+										style={{
+											backgroundColor: currentListUid === list.uid && "#e7e7e6",
 										}}
 									>
 										{list.name}
@@ -169,15 +230,38 @@ function Dashboard() {
 					</button>
 				</div>
 
+				<div className={Style.navbar}>
+					<svg
+						xmlns="http://www.w3.org/2000/svg"
+						width="20"
+						height="20"
+						viewBox="0 0 24 24"
+						fill="none"
+						stroke="currentColor"
+						strokeWidth="2"
+						strokeLinecap="round"
+						strokeLinejoin="round"
+						className={Style["sidebar-toggle"]}
+						onClick={() => setSidebarOpen(!sidebarOpen)}
+					>
+						<path d="M3 6h18M3 12h18M3 18h18" />
+					</svg>
+					<button onClick={logout} className={Style.logoutBtn}>
+						Log out
+					</button>
+				</div>
 				{!habitList ? (
 					<div className={Style.Defaultmain}>
 						Create or select a new list to continue
 					</div>
 				) : (
-					<main className={Style.main}>
-						<div className={Style.navbar}>
-							<button onClick={logout} className={Style.logoutBtn}>Log out</button>
-						</div>
+					<main
+						className={Style.main}
+						style={{
+							width: sidebarOpen ? "calc(100% - 22rem)" : "100%",
+							// width: "22rem",
+						}}
+					>
 						<div className={Style.tasklist}>
 							<div className={Style.head}>
 								{/* <h1>Daily checklist</h1> */}
@@ -191,12 +275,16 @@ function Dashboard() {
 								/>
 							</div>
 							<div className={Style.outof}>
-								<span className={Style.status}>
-									{(habitList.filter((f) => f.status === true).length /
-										habitList.length) *
-										100}
-									%
-								</span>
+								{habitList.length > 0 ? (
+									<span className={Style.status}>
+										{((habitList.filter((f) => f.status === true).length /
+											habitList.length) *
+											100).toFixed()}
+										%
+									</span>
+								) : (
+									"0%"
+								)}
 								<div className={Style.progressWrapper}>
 									<div
 										className={Style.bar}
@@ -213,7 +301,7 @@ function Dashboard() {
 							<Task
 								habitList={habitList}
 								setHabitList={setHabitList}
-								currentList={curentList}
+								currentListUid={currentListUid}
 								user={user}
 							/>
 							<form onSubmit={addHabit}>
