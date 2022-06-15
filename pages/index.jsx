@@ -6,31 +6,8 @@ const Home = () => {
 	return (
 		<div className={Style.container}>
 			<div className={Style.bg}>
-				{
-					//a for loop for rendering number of inputs checkbox
-					Array.from(Array(6000).keys()).map((item, index) => {
-						return (
-							<div
-                key={index}
-                // className={Style.box}
-                
-								className={
-									// index === Math.floor(Math.random() * 10 + 1)
-									// ?
-									`${Style.checkbox}`
-                  // give a random div a classname of checkboxDone
-
-
-									// :
-									// `${Style.checkboxDone}`
-								}
-								onClick={() => toggleTaskState(t)}
-							>
-								
-							</div>
-						);
-					})
-				}
+				
+				
 			</div>
 			<div className={Style.box}>
 				<h1>Checklist</h1>

@@ -14,60 +14,24 @@
         top: 0;
         left: 0;
         z-index: -912638712;
-        display: flex;
-        // flex-direction: column;
-        flex-wrap: wrap;
+       
         // gap: 1rem;
-         .checkbox,
-        .checkboxDone {
-            position: relative;
-            height: 18px;
-            width: 18px;
-            border-radius: 50%;
-            background-color: rgb(255, 255, 255);
-            margin: 3px;
-            align-self: center;
-            border: 1px solid rgb(179, 194, 223);
-            position: relative;
-            cursor: pointer;
+        width: 100%;
+        height: 100%;
+         background-color: #000;
+        
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' version='1.1' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns:svgjs='http://svgjs.com/svgjs' width='1440' height='560' preserveAspectRatio='none' viewBox='0 0 1440 560'%3e%3cg mask='url(%26quot%3b%23SvgjsMask1022%26quot%3b)' fill='none'%3e%3crect width='1440' height='560' x='0' y='0' fill='rgba(248%2c 243%2c 212%2c 1)'%3e%3c/rect%3e%3cpath d='M1513.75 146.46C1374.63 147.13 1246.86 265.03 969.83 264.06 692.8 263.09 584.29-52.1 425.91-64.52' stroke='rgba(246%2c 65%2c 108%2c 1)' stroke-width='2'%3e%3c/path%3e%3cpath d='M1540.02 362.92C1413.36 364.48 1314.57 514.86 1054.71 508.52 794.85 502.18 741 35.61 569.4-9.87' stroke='rgba(246%2c 65%2c 108%2c 1)' stroke-width='2'%3e%3c/path%3e%3cpath d='M1618.22 247.63C1507.9 247.41 1400.38 177.63 1182.54 177.63 964.69 177.63 974.6 250.57 746.85 247.63 519.11 244.69 447.44-69.62 311.17-88.37' stroke='rgba(246%2c 65%2c 108%2c 1)' stroke-width='2'%3e%3c/path%3e%3cpath d='M1521.36 75.47C1339 76.86 1081.55 254.94 814.25 254.67 546.95 254.4 576.94-37.82 460.7-59.37' stroke='rgba(246%2c 65%2c 108%2c 1)' stroke-width='2'%3e%3c/path%3e%3cpath d='M1602.15 166.86C1487.47 173.69 1410.42 388.55 1197.82 385.26 985.22 381.97 943.16-48.34 793.49-96.56' stroke='rgba(246%2c 65%2c 108%2c 1)' stroke-width='2'%3e%3c/path%3e%3c/g%3e%3cdefs%3e%3cmask id='SvgjsMask1022'%3e%3crect width='1440' height='560' fill='white'%3e%3c/rect%3e%3c/mask%3e%3c/defs%3e%3c/svg%3e");
 
-            &::after {
-                position: absolute;
-                width: 8px;
-                height: 5px;
-                border-color: currentcolor currentcolor rgb(255, 255, 255) rgb(255, 255, 255);
-                border-style: none none solid solid;
-                border-width: medium medium 2px 2px;
-                border-image: none 100% / 1 / 0 stretch;
-                background: transparent none repeat scroll 0% 0%;
-                content: "";
-                opacity: 0;
-                transform: rotate(-45deg);
-                top: 30%;
-                left: 25%;
-                // background-color: blue;
-            }
+        background-repeat: no-repeat;
+    background-position: right bottom;
+    background-size: cover;
 
-            &:hover{
-                border: 1px solid rgb(95, 183, 255);
-            }
-        }
 
-        .checkboxDone {
-            height: 18px;
-            width: 18px;
-            border-radius: 50%;
-             margin: 3px;
-            align-self: center;
-            border: 1px solid rgb(95, 183, 255);
-            position: relative;
-            cursor: pointer;
-            background-color: #5fb7ff;
 
-            &::after {
-                opacity: 1;
-            }
-        }
+//     background-color: #f6f7d7;
+// background-image: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ff165d' fill-opacity='0.58' fill-rule='evenodd'%3E%3Ccircle cx='3' cy='3' r='3'/%3E%3Ccircle cx='13' cy='13' r='3'/%3E%3C/g%3E%3C/svg%3E");
+
+
     }
       .box{
         background-color: rgb(255, 255, 255);

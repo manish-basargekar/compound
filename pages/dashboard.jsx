@@ -60,6 +60,11 @@ function Dashboard() {
 	useEffect(() => {
 		if (loading) return;
 		if (!user) return router.push("/login");
+
+		if(window.innerWidth < 500){
+			setSidebarOpen(false);
+		}
+
 	}, [user, loading]);
 
 	useEffect(() => {
@@ -95,6 +100,7 @@ function Dashboard() {
 		// console.log(allLists);
 		fetchTasks(listId);
 		setCurrentListOnDb(list.uid, list.name);
+		setSidebarOpen(false);
 	};
 
 	const setCurrentListOnDb = async (listId, name) => {
@@ -229,7 +235,7 @@ function Dashboard() {
 						<span>New list</span>
 					</button>
 				</div>
-
+				{/* {console.log(window.innerWidth)} */}
 				<div className={Style.navbar}>
 					<svg
 						xmlns="http://www.w3.org/2000/svg"
@@ -258,8 +264,9 @@ function Dashboard() {
 					<main
 						className={Style.main}
 						style={{
-							width: sidebarOpen ? "calc(100% - 22rem)" : "100%",
-							// width: "22rem",
+							width: sidebarOpen
+								? "calc(100% - 22rem)"
+								: "100%",
 						}}
 					>
 						<div className={Style.tasklist}>
@@ -277,9 +284,11 @@ function Dashboard() {
 							<div className={Style.outof}>
 								{habitList.length > 0 ? (
 									<span className={Style.status}>
-										{((habitList.filter((f) => f.status === true).length /
-											habitList.length) *
-											100).toFixed()}
+										{(
+											(habitList.filter((f) => f.status === true).length /
+												habitList.length) *
+											100
+										).toFixed()}
 										%
 									</span>
 								) : (

@@ -12,6 +12,7 @@
   // background-color: aqua;
 
   // margin-top: 2rem;
+  z-index: -2;
   position: relative;
 
   .day {
@@ -24,6 +25,7 @@
     width: 22rem;
     height: 100vh;
     background-color: #f7f6f3;
+   
     // background-color: transparent;
     // position: absolute;
     // left: 0;
@@ -40,12 +42,22 @@
     top: 0;
     left: 0;
     z-index: 1;
-    transition: transform .3s cubic-bezier(0.5, 0, 0, 0.75);
+    transition: transform 0.3s cubic-bezier(0.5, 0, 0, 0.75);
 
     // position: relative;
-    .sidebar__header{
-      svg{
-        right: .5rem;
+
+
+    @media screen and (max-width: 500px) {
+      // width: 15rem;
+      width: 80vw;
+      height: 100vh;
+      box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+      //  background-color: #ffecb3;
+    }
+
+    .sidebar__header {
+      svg {
+        right: 0.5rem;
         top: 1.4rem;
         position: absolute;
         cursor: pointer;
@@ -79,7 +91,7 @@
           // width: 1.5rem;
           // height: 1.5rem;
           // font-size: 1.5rem;
-          padding: .3rem;
+          padding: 0.3rem;
           display: flex;
           justify-content: center;
           align-items: center;
@@ -88,10 +100,9 @@
           // background-color: #ff6565;
           cursor: pointer;
           background-color: transparent;
-          
-          &:hover{
-            background-color: #eee;
 
+          &:hover {
+            background-color: #eee;
           }
         }
       }
@@ -140,12 +151,12 @@
     position: absolute;
     top: 0;
     // right: 0;
-    height: 3rem;
+    height: 4rem;
     padding: 1rem;
     display: flex;
     justify-content: flex-end;
     align-items: center;
-    // background-color: #F900BF;
+    // background-color: #ff88e3;
     // height: max-content;
     position: fixed;
     // height: 100%;
@@ -153,7 +164,12 @@
     // left: 0;
     // z-index: 1;
 
-    .sidebar-toggle{
+    @media screen and (max-width: 500px) {
+      width: 100vw;
+      
+    }
+
+    .sidebar-toggle {
       position: absolute;
       left: 1rem;
       cursor: pointer;
@@ -163,6 +179,10 @@
       padding: 0.5rem 2rem;
       cursor: pointer;
     }
+  }
+
+  .mainFull{
+    width: 100%;
   }
 
   .main {
@@ -176,7 +196,18 @@
     align-items: center;
     position: relative;
     // margin-right: 0;
-     transition: width .3s cubic-bezier(0.5, 0, 0, 0.75);
+    transition: width 0.3s cubic-bezier(0.5, 0, 0, 0.75);
+
+
+    @media screen and (max-width: 500px) {
+      width: 100vw;
+      margin-top: 4rem;
+      z-index: -1;
+      // justify-content: center;
+      // background-color: #19e712;
+      // margin-top: 0;
+      // margin-left: 0;
+    }
 
     .outof {
       color: rgb(89, 114, 163);
@@ -240,6 +271,15 @@
   width: 768px;
   padding: 0 2rem;
   // overflow-y: scroll;
+
+  @media screen and (max-width: 500px) {
+      width: 90vw;
+      padding: 0;
+      margin-top: 1rem;
+      // background-color: #ffffff;
+      // z-index: -1;
+    }
+
 
   form {
     width: 100%;
@@ -354,8 +394,15 @@
     // background-color: blue;
     // margin-bottom: 1rem;
 
+    @media screen and (max-width: 500px) {
+      font-size: 2rem;
+    }
+
     .listTitle {
       height: max-content !important;
+
+
+
     }
 
     .listTitleInput {

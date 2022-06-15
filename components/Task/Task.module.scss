@@ -2,8 +2,8 @@
 .taskCompleted {
     display: flex;
     transition: text-decoration 300ms ease;
-    padding:0;
-  
+    padding: 0;
+
     background-color: #f7f6f3;
     padding: 1rem;
     border-radius: 10px;
@@ -15,6 +15,13 @@
     margin: auto;
     margin-top: 1rem;
     position: relative;
+
+    // width: 100vw;
+
+    @media screen and (max-width: 500px) {
+        width: 100%;
+        padding: .5rem;
+    }
     // color: #4B5563;
 
     &:hover {
@@ -46,10 +53,9 @@
             background: rgb(255, 255, 255) none repeat scroll 0% 0%;
             cursor: grab;
             // display: none;
-            &:hover{
-                svg{
-
-                    opacity: .7;
+            &:hover {
+                svg {
+                    opacity: 0.7;
                 }
             }
         }
@@ -84,7 +90,7 @@
                 // background-color: blue;
             }
 
-            &:hover{
+            &:hover {
                 border: 1px solid rgb(95, 183, 255);
             }
         }
@@ -156,12 +162,10 @@
     flex-wrap: wrap;
     word-break: break-word;
     height: max-content !important;
-    
-    
+
     width: 100%;
-    
-    
-    .taskTitleInput{
+
+    .taskTitleInput {
         height: max-content !important;
         width: 100% !important;
         background-color: #5fb7ff;
