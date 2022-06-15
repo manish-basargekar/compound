@@ -61,10 +61,9 @@ function Dashboard() {
 		if (loading) return;
 		if (!user) return router.push("/login");
 
-		if(window.innerWidth < 500){
+		if (window.innerWidth < 500) {
 			setSidebarOpen(false);
 		}
-
 	}, [user, loading]);
 
 	useEffect(() => {
@@ -100,7 +99,10 @@ function Dashboard() {
 		// console.log(allLists);
 		fetchTasks(listId);
 		setCurrentListOnDb(list.uid, list.name);
-		setSidebarOpen(false);
+
+		if (window.innerWidth < 500) {
+			setSidebarOpen(false);
+		}
 	};
 
 	const setCurrentListOnDb = async (listId, name) => {
@@ -138,6 +140,9 @@ function Dashboard() {
 			name: "Untitled Checklist",
 		};
 		addListToDb(newList);
+		if (window.innerWidth < 500) {
+			setSidebarOpen(false);
+		}
 	};
 
 	const addListToDb = async (list) => {
@@ -264,9 +269,7 @@ function Dashboard() {
 					<main
 						className={Style.main}
 						style={{
-							width: sidebarOpen
-								? "calc(100% - 22rem)"
-								: "100%",
+							width: sidebarOpen ? "calc(100% - 22rem)" : "100%",
 						}}
 					>
 						<div className={Style.tasklist}>
