@@ -3,27 +3,28 @@ import { useState, useEffect } from "react";
 import Task from "../components/Task/Task";
 
 import { nanoid } from "nanoid";
-import TextareaAutosize from "react-textarea-autosize";
 
-import { EditText, EditTextarea } from "react-edit-text";
+
+import { EditTextarea } from "react-edit-text";
 import "react-edit-text/dist/index.css";
 
-import { auth, logout, db } from "../firebase";
+import { auth,  db } from "../firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 
 import { useRouter } from "next/router";
 
 import {
-	getDoc,
 	setDoc,
 	doc,
 	query,
 	collection,
 	onSnapshot,
-	addDoc,
 	updateDoc,
-	arrayUnion,
 } from "firebase/firestore";
+import Sidebar from "../components/Sidebar/Sidebar";
+import Navbar from "../components/Navbar/Navbar";
+import ProgressBar from "../components/ProgressBar/ProgressBar";
+import NewTaskInput from "../components/NewTaskInput/NewTaskInput";
 
 function Dashboard() {
 	const [newHabit, setNewHabit] = useState("");
@@ -41,21 +42,6 @@ function Dashboard() {
 	const [sidebarOpen, setSidebarOpen] = useState(true);
 
 	const router = useRouter();
-
-	const addHabit = (e) => {
-		e.preventDefault();
-		const addNewHabit = { uid: nanoid(), taskTitle: newHabit, status: false };
-		addTaskToDb(addNewHabit);
-		// setHabitList([...habitList, addNewHabit]);
-		setNewHabit("");
-	};
-
-	const addTaskToDb = async (task) => {
-		const listPath = `users/${user.uid}/lists/${currentListUid}/tasks`;
-		const taskRef = doc(db, listPath, task.uid);
-
-		await setDoc(taskRef, task);
-	};
 
 	useEffect(() => {
 		if (loading) return;
@@ -85,12 +71,24 @@ function Dashboard() {
 			const data = snapshot.data();
 			setCurrentListUid(data.currentList.uid);
 			setCurrentHeading(data.currentList.name);
-			// console.log(data.currentList.uid);
 			fetchTasks(snapshot.data().currentList.uid);
-			// setCurrentHeading(allLists.find((f) => f.uid === curentListUid).name);
 		});
-		// console.log(allLists);
 	}, [user]);
+
+	const addHabit = (e) => {
+		e.preventDefault();
+		const addNewHabit = { uid: nanoid(), taskTitle: newHabit, status: false };
+		addTaskToDb(addNewHabit);
+		// setHabitList([...habitList, addNewHabit]);
+		setNewHabit("");
+	};
+
+	const addTaskToDb = async (task) => {
+		const listPath = `users/${user.uid}/lists/${currentListUid}/tasks`;
+		const taskRef = doc(db, listPath, task.uid);
+
+		await setDoc(taskRef, task);
+	};
 
 	const HandleListClick = (listId) => {
 		const list = allLists.find((f) => f.uid === listId);
@@ -156,111 +154,18 @@ function Dashboard() {
 
 	return (
 		<>
-			{/* {console.log(allLists)} */}
 			<div className={Style.container}>
-				<div
-					className={Style.sidebar}
-					style={{
-						transform: sidebarOpen ? "translateX(0)" : "translateX(-100%)",
-					}}
-				>
-					<div className={Style.sidebar__header}>
-						<h1>Checklist</h1>
-						<svg
-							xmlns="http://www.w3.org/2000/svg"
-							width="20"
-							height="20"
-							viewBox="0 0 24 24"
-							fill="none"
-							stroke="currentColor"
-							strokeWidth="2"
-							strokeLinecap="round"
-							strokeLinejoin="round"
-							// class="ai ai-TextAlignJustified"
-							onClick={() => setSidebarOpen(!sidebarOpen)}
-						>
-							<path d="M3 6h18M3 12h18M3 18h18" />
-						</svg>
-					</div>
-					<div className={Style.sidebar__content}>
-						<div className={Style.head}>
-							<h3>All lists</h3>
-							<button onClick={CreateNewList}>
-								<svg
-									xmlns="http://www.w3.org/2000/svg"
-									width="20"
-									height="20"
-									viewBox="0 0 24 24"
-									fill="none"
-									stroke="#646262"
-									strokeWidth="2"
-									strokeLinecap="round"
-									strokeLinejoin="round"
-									// class="ai ai-Plus"
-								>
-									<path d="M12 20v-8m0 0V4m0 8h8m-8 0H4" />
-								</svg>
-							</button>
-						</div>
-						{/* {console.log(currentListUid)} */}
-						<ul>
-							{
-								// allLists.map()
-								allLists.map((list) => (
-									<li
-										key={list.uid}
-										onClick={() => {
-											HandleListClick(list.uid);
-										}}
-										style={{
-											backgroundColor: currentListUid === list.uid && "#e7e7e6",
-										}}
-									>
-										{list.name}
-									</li>
-								))
-							}
-						</ul>
-					</div>
-					<button className={Style.createListBtn} onClick={CreateNewList}>
-						<svg
-							xmlns="http://www.w3.org/2000/svg"
-							width="16"
-							height="16"
-							viewBox="0 0 24 24"
-							fill="none"
-							stroke="currentColor"
-							strokeWidth="2"
-							strokeLinecap="round"
-							strokeLinejoin="round"
-							// class="ai ai-Plus"
-						>
-							<path d="M12 20v-8m0 0V4m0 8h8m-8 0H4" />
-						</svg>
-						<span>New list</span>
-					</button>
-				</div>
-				{/* {console.log(window.innerWidth)} */}
-				<div className={Style.navbar}>
-					<svg
-						xmlns="http://www.w3.org/2000/svg"
-						width="20"
-						height="20"
-						viewBox="0 0 24 24"
-						fill="none"
-						stroke="currentColor"
-						strokeWidth="2"
-						strokeLinecap="round"
-						strokeLinejoin="round"
-						className={Style["sidebar-toggle"]}
-						onClick={() => setSidebarOpen(!sidebarOpen)}
-					>
-						<path d="M3 6h18M3 12h18M3 18h18" />
-					</svg>
-					<button onClick={logout} className={Style.logoutBtn}>
-						Log out
-					</button>
-				</div>
+				<Sidebar
+					sidebarOpen={sidebarOpen}
+					setSidebarOpen={setSidebarOpen}
+					CreateNewList={CreateNewList}
+					allLists={allLists}
+					currentListUid={currentListUid}
+					HandleListClick={HandleListClick}
+				/>
+
+				<Navbar setSidebarOpen={setSidebarOpen} sidebarOpen={sidebarOpen} />
+
 				{!habitList ? (
 					<div className={Style.Defaultmain}>
 						Create or select a new list to continue
@@ -274,7 +179,6 @@ function Dashboard() {
 					>
 						<div className={Style.tasklist}>
 							<div className={Style.head}>
-								{/* <h1>Daily checklist</h1> */}
 								<EditTextarea
 									defaultValue={currentHeading}
 									className={Style.listTitle}
@@ -284,88 +188,18 @@ function Dashboard() {
 									rows={2}
 								/>
 							</div>
-							<div className={Style.outof}>
-								{habitList.length > 0 ? (
-									<span className={Style.status}>
-										{(
-											(habitList.filter((f) => f.status === true).length /
-												habitList.length) *
-											100
-										).toFixed()}
-										%
-									</span>
-								) : (
-									"0%"
-								)}
-								<div className={Style.progressWrapper}>
-									<div
-										className={Style.bar}
-										style={{
-											width: `${
-												(habitList.filter((f) => f.status === true).length /
-													habitList.length) *
-												100
-											}%`,
-										}}
-									></div>
-								</div>
-							</div>
+							<ProgressBar habitList={habitList} />
 							<Task
 								habitList={habitList}
 								setHabitList={setHabitList}
 								currentListUid={currentListUid}
 								user={user}
 							/>
-							<form onSubmit={addHabit}>
-								<div className={Style.addTask}>
-									<div className={Style.icon}>
-										<svg
-											xmlns="http://www.w3.org/2000/svg"
-											width="16"
-											height="16"
-											viewBox="0 0 24 24"
-											fill="none"
-											stroke="currentColor"
-											strokeWidth="2"
-											strokeLinecap="round"
-											strokeLinejoin="round"
-											// class="ai ai-Plus"
-										>
-											<path d="M12 20v-8m0 0V4m0 8h8m-8 0H4" />
-										</svg>
-									</div>
-									<TextareaAutosize
-										maxRows={5}
-										required
-										placeholder="Add a task"
-										className={Style.addHabitInput}
-										value={newHabit}
-										onChange={(e) => setNewHabit(e.target.value)}
-									/>
-								</div>
-								<button
-									type="submit"
-									disabled={newHabit ? false : true}
-									className={Style.addHabitBtn}
-									// style={{ backgroundColor: newHabit ? "#F900BF" : "none" }}
-								>
-									<svg
-										xmlns="http://www.w3.org/2000/svg"
-										width="16"
-										height="16"
-										viewBox="0 0 24 24"
-										fill="none"
-										stroke="currentColor"
-										strokeWidth="2"
-										strokeLinecap="round"
-										strokeLinejoin="round"
-										// class="ai ai-ArrowUp"
-									>
-										<path d="M12 20V4" />
-										<path d="M5 11l7-7 7 7" />
-									</svg>
-								</button>
-							</form>
+							<NewTaskInput
+								addHabit={addHabit}
+								newHabit={newHabit}
+								setNewHabit={setNewHabit}
+							/>
 						</div>
 					</main>
 				)}

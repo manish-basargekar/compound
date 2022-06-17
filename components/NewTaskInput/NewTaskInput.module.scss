@@ -1,0 +1,104 @@
+.NewTaskForm{
+    width: 100%;
+    margin: auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    // padding: 0 4rem;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    border-radius: 8px;
+    background-color: #f7f6f3;
+    border: 2px solid #eee;
+
+    .icon {
+        width: 40px;
+        height: 2rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        // background-color: #19e712;
+        // align-self: flex-end;
+    }
+
+    .addHabitBtn {
+        height: 3rem;
+        width: 3rem;
+        // margin-right: 1rem;
+        cursor: pointer;
+
+        border: none;
+        // background-color: aqua;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 4px;
+
+        // position: absolute;
+        // right: 5px;
+        // bottom: 5px;
+        background-color: #19e712;
+        align-self: flex-end;
+
+        &:hover {
+            //  background-color: rgba(220, 228, 243, 0.5);
+            opacity: 0.7;
+            svg {
+                opacity: 0.7;
+            }
+        }
+        &:disabled {
+            cursor: not-allowed;
+            background-color: #f7f6f3;
+            // border: 2px solid #eee;
+        }
+    }
+}
+
+
+  .addTask {
+    // padding: 12px 10px;
+    // margin-top: 15px;
+    border-radius: 8px;
+
+    // display: grid;
+    // // grid-template-columns: 40px 1fr min-content;
+    // grid-template-columns: 1fr 50px;
+    // -moz-box-align: center;
+    // align-items: flex-end;
+    // gap: 10px;
+    // background-color: rgba(220, 228, 243, 0.5);
+    // background-color: #f7f6f3;
+    // border: 2px solid #eee;
+    border-radius: 8px;
+    padding: 0.5rem;
+    // margin-top: 1rem;
+    // margin-bottom: 10px;
+    width: 100%;
+    min-height: 3rem;
+
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    // flex: 2;
+
+    .addHabitInput {
+      border: medium none;
+      box-shadow: none;
+      margin-bottom: 0px;
+      padding: 0px;
+      background: transparent none repeat scroll 0% 0%;
+
+      // min-height: 10px;
+      resize: none;
+      // padding: 10px;
+      box-sizing: border-box;
+      // margin: 5px;
+      align-self: center;
+      width: 100%;
+      // width: calc(100% - 1rem);
+      // background-color: hotpink;
+    }
+  }

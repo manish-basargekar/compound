@@ -24,23 +24,22 @@ import {
 } from "firebase/firestore";
 import toast from "react-hot-toast";
 
-
 import { nanoid } from "nanoid";
 
 const firebaseConfig = {
-	apiKey: "AIzaSyCzjKHeucJiInPkvoNAz3z7aXGnUIm2bwQ",
+	apiKey: process.env.NEXT_PUBLIC_API_KEY,
 
-	authDomain: "checklist-b48a7.firebaseapp.com",
+	authDomain: process.env.NEXT_PUBLIC_AUTH_DOMAIN,
 
-	projectId: "checklist-b48a7",
+	projectId: process.env.NEXT_PUBLIC_PROJECT_ID,
 
-	storageBucket: "checklist-b48a7.appspot.com",
+	storageBucket: process.env.NEXT_PUBLIC_STORAGE_BUCKET,
 
-	messagingSenderId: "1033453929418",
+	messagingSenderId: process.env.NEXT_PUBLIC_MESSAGING_SENDER_ID,
 
-	appId: "1:1033453929418:web:16e3e660bd2418065f0533",
+	appId: process.env.NEXT_PUBLIC_APP_ID,
 
-	measurementId: "G-N2HGL5TSTW",
+	measurementId: process.env.NEXT_PUBLIC_MEASUREMENT_ID,
 };
 
 // Initialize Firebase
@@ -79,8 +78,6 @@ const signInWithGoogle = async () => {
 		const listRef = doc(db, listPath, newList.uid);
 
 		await setDoc(listRef, newList);
-
-
 	} catch (error) {
 		console.log(error);
 		alert(error.message);
@@ -101,12 +98,10 @@ const registerWithEmailAndPassword = async (name, email, password) => {
 		const res = await createUserWithEmailAndPassword(auth, email, password);
 		const user = res.user;
 
-			const newList = {
-				uid: nanoid(),
-				name: "Untitled Checklist",
-			};
-
-
+		const newList = {
+			uid: nanoid(),
+			name: "Untitled Checklist",
+		};
 
 		await setDoc(doc(db, "users", user.uid), {
 			uid: user.uid,
@@ -115,8 +110,6 @@ const registerWithEmailAndPassword = async (name, email, password) => {
 			email,
 			currentList: newList,
 		});
-
-
 
 		const listPath = `users/${user.uid}/lists`;
 		const listRef = doc(db, listPath, newList.uid);
